@@ -9,25 +9,7 @@
 
 >其实iptables服务并不是真正的防火墙，只是用来定义防火墙功能的防火墙管理工具，将定义好的规则交给内核里面的netfilter功能，即网络过滤器来读取，从而真正实现防火墙功能。
 
-<!-- vscode-markdown-toc -->
-* 1. [IPtables 抵挡封包的方式](#IPtables)
-* 2. [五链](#)
-* 3. [四表](#-1)
-* 4. [iptables命令中常见的控制类型](#iptables)
-* 5. [用法格式](#-1)
-	* 5.1. [iptables的用法格式](#iptables-1)
-	* 5.2. [查看规则](#-1)
-	* 5.3. [删除规则](#-1)
-	* 5.4. [默认策略修改](#-1)
-	* 5.5. [实例](#-1)
-
-<!-- vscode-markdown-toc-config
-	numbering=true
-	autoSave=true
-	/vscode-markdown-toc-config -->
-<!-- /vscode-markdown-toc -->
-
-##  1. <a name='IPtables'></a>IPtables 抵挡封包的方式
+## IPtables 抵挡封包的方式
 
 1. 拒绝让Internet包进入Linux主机的某些port
 
@@ -37,7 +19,7 @@
 
 4. 分析硬件地址mac来提供服务
 
-##  2. <a name=''></a>五链
+## 五链
 
 >iptables命令中设置了数据过滤或者是处理数据包的策略，叫做规则。将多个规则合成一个链，叫做规则链，规则链则依据数据包位置不同分成5类
 
@@ -49,7 +31,7 @@
 |   FORWARD   |                 #处理转发的数据包                  |
 | POSTROUTING | #在进行路由判断之后所要进行的规则(SNAT/MASQUERADE) |
 
-##  3. <a name='-1'></a>四表
+## 四表
 
 >iptables中的规则表适用于容纳规则链，规则表默认是允许状态的，那么规则链就是设置被禁止的规则，而反之如果规则表是禁止状态的，那么规则链就是设置被允许的规则。
 
@@ -70,7 +52,7 @@
 
 ![5eaf219f7e0e72d14ed1d6a0e934e985](https://s2.loli.net/2022/01/17/r1UajPqH9QS4Ktz.png)
 
-##  4. <a name='iptables'></a>iptables命令中常见的控制类型
+## iptables命令中常见的控制类型
 
 类型|	功能
  :-: | :-: 
@@ -79,9 +61,9 @@ LOG	|记录日志，传递给下一条规则
 REJECT|	拒绝通过，可以给提示
 DROP	|直接丢弃，不给回应
 
-##  5. <a name='-1'></a>用法格式
+## 用法格式
 
-###  5.1. <a name='iptables-1'></a>iptables的用法格式
+### iptables的用法格式
 
 `iptables [-t 表名] 选项 [链名] [条件] [-j 控制类型]`
 `iptables –[A|I 链] [-i|o 网络接口] [-p 协议] [-s 来源ip/网域] [-d 目标ip/网域] –j[ACCEPT|DROP]`
@@ -101,7 +83,7 @@ DROP	|直接丢弃，不给回应
 --dport num|	匹配目标端口号
 --sport num	|匹配来源端口号 
 
-###  5.2. <a name='-1'></a>查看规则
+### 查看规则
 
 `[root@wentan ~]# iptables [-t tables] [-L] [-nv]`
 参数| 解释
@@ -111,7 +93,7 @@ DROP	|直接丢弃，不给回应
 -n | #不进行IP与主机名的反查，显示信息的速度会快很多
 -v  |#列出更多的信息，包括封包数，相关网络接口等
 
-###  5.3. <a name='-1'></a>删除规则
+### 删除规则
 
 `[root@wentan ~]# iptables [-t tables] [-FXZ]`
 参数|解释
@@ -120,11 +102,11 @@ DROP	|直接丢弃，不给回应
 -X | #清除所有自定义规则
 -Z  |#将计数与流量统计清零
 
-###  5.4. <a name='-1'></a>默认策略修改
+### 默认策略修改
 
 `[root@wentan ~]#  iptables [-t tables] -P [链名] [ACCEPT/DROP]`
 
-###  5.5. <a name='-1'></a>实例
+### 实例
 
 实例1
 

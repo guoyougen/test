@@ -1,7 +1,7 @@
 <div style='display: none'>
   Date: 2022-01-15 22:42:46
   LastEditors: gyg
-  LastEditTime: 2022-01-17 17:44:54
+  LastEditTime: 2022-01-17 17:30:33
   FilePath: \test\1_14~1_15@iptables.mm.md
 </div>
 
@@ -9,25 +9,7 @@
 
 >其实iptables服务并不是真正的防火墙，只是用来定义防火墙功能的防火墙管理工具，将定义好的规则交给内核里面的netfilter功能，即网络过滤器来读取，从而真正实现防火墙功能。
 
-<!-- vscode-markdown-toc -->
-* 1. [IPtables 抵挡封包的方式](#IPtables)
-* 2. [五链](#)
-* 3. [四表](#-1)
-* 4. [iptables命令中常见的控制类型](#iptables)
-* 5. [用法格式](#-1)
-	* 5.1. [iptables的用法格式](#iptables-1)
-	* 5.2. [查看规则](#-1)
-	* 5.3. [删除规则](#-1)
-	* 5.4. [默认策略修改](#-1)
-	* 5.5. [实例](#-1)
-
-<!-- vscode-markdown-toc-config
-	numbering=true
-	autoSave=true
-	/vscode-markdown-toc-config -->
-<!-- /vscode-markdown-toc -->
-
-##  1. <a name='IPtables'></a>IPtables 抵挡封包的方式
+## IPtables 抵挡封包的方式
 
 1. 拒绝让Internet包进入Linux主机的某些port
 
@@ -37,7 +19,7 @@
 
 4. 分析硬件地址mac来提供服务
 
-##  2. <a name=''></a>五链
+## 五链
 
 >iptables命令中设置了数据过滤或者是处理数据包的策略，叫做规则。将多个规则合成一个链，叫做规则链，规则链则依据数据包位置不同分成5类
 
@@ -49,7 +31,7 @@
 |   FORWARD   |                 #处理转发的数据包                  |
 | POSTROUTING | #在进行路由判断之后所要进行的规则(SNAT/MASQUERADE) |
 
-##  3. <a name='-1'></a>四表
+## 四表
 
 >iptables中的规则表适用于容纳规则链，规则表默认是允许状态的，那么规则链就是设置被禁止的规则，而反之如果规则表是禁止状态的，那么规则链就是设置被允许的规则。
 
@@ -70,7 +52,7 @@
 
 ![5eaf219f7e0e72d14ed1d6a0e934e985](https://s2.loli.net/2022/01/17/r1UajPqH9QS4Ktz.png)
 
-##  4. <a name='iptables'></a>iptables命令中常见的控制类型
+## iptables命令中常见的控制类型
 
 类型|	功能
  :-: | :-: 
@@ -79,9 +61,9 @@ LOG	|记录日志，传递给下一条规则
 REJECT|	拒绝通过，可以给提示
 DROP	|直接丢弃，不给回应
 
-##  5. <a name='-1'></a>用法格式
+## 用法格式
 
-###  5.1. <a name='iptables-1'></a>iptables的用法格式
+### iptables的用法格式
 
 `iptables [-t 表名] 选项 [链名] [条件] [-j 控制类型]`
 `iptables –[A|I 链] [-i|o 网络接口] [-p 协议] [-s 来源ip/网域] [-d 目标ip/网域] –j[ACCEPT|DROP]`
@@ -101,7 +83,7 @@ DROP	|直接丢弃，不给回应
 --dport num|	匹配目标端口号
 --sport num	|匹配来源端口号 
 
-###  5.2. <a name='-1'></a>查看规则
+### 查看规则
 
 `[root@wentan ~]# iptables [-t tables] [-L] [-nv]`
 参数| 解释
@@ -111,24 +93,19 @@ DROP	|直接丢弃，不给回应
 -n | #不进行IP与主机名的反查，显示信息的速度会快很多
 -v  |#列出更多的信息，包括封包数，相关网络接口等
 
-###  5.3. <a name='-1'></a>删除规则
+### 删除规则
 
 `[root@wentan ~]# iptables [-t tables] [-FXZ]`
 参数|解释
  :-: | :-: 
--F|   #清除所有的规则
--X | #清除所有自定义规则
--Z  |#将计数与流量统计清零
-
-###  5.4. <a name='-1'></a>默认策略修改
-
-`[root@wentan ~]#  iptables [-t tables] -P [链名] [ACCEPT/DROP]`
-
-###  5.5. <a name='-1'></a>实例
-
+-F   #清除所有的规则
+-X  #清除所有自定义规则
+-Z  #将计数与流量统计清零
+2.5.4 默认策略修改
+[root@wentan ~]#  iptables [-t tables] -P [链名] [ACCEPT/DROP]
+2.5.5 实例
 实例1
 
-```bash
 # 所有的来自 lo 这个网口的封包，都予以接受
 [root@wentan ~]# iptables -A INPUT -i lo -j ACCEPT
 
@@ -155,20 +132,15 @@ num  target     prot opt source               destination
 1    ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0           
 2    ACCEPT     all  --  192.168.1.200        0.0.0.0/0           
 3    DROP       all  --  192.168.1.10         0.0.0.0/0
-```
-
 案例2 Iptables 开放tcp、udp端口
 
-```bash
  #开放samba端口（udp137，138；tcp139,445）
 [root@wentan ~]# iptables -A INPUT -i ens160 -p udp --dport 137:138 -j ACCEPT
 [root@wentan ~]# iptables -A INPUT -i ens160 -p tcp --dport 139 -j ACCEPT 
 [root@wentan ~]# iptables -A INPUT -i ens160 -p tcp --dport 445 -j ACCEPT
-```
 
 实例3 匹配ICMP端口和ICMP类型
 
-```bash
 iptables –A INPUT –p icmp --icmp-type 类型 –j REJECT
  #参数：--icmp-type ：后面必须要接 ICMP 的封包类型，也可以使用代号，例如 8 代表 echo request 的意思。（可自查询ICMP-type对应表）
 [root@wentan ~]# iptables -A INPUT -p icmp --icmp-type 8 -j REJECT
@@ -211,11 +183,8 @@ Timestamp reply (obsolete)——时间戳应答（作废不用）
 16	0	Information reply (obsolete)——信息应答（作废不用）
 17	0	Address mask request——地址掩码请求
 18	0	Address mask reply——地址掩码应答
-```
-
 实例4 iptables --syn 的处理方式
 
-```bash
 指定TCP匹配扩展
 
 使用 --tcp-flags 选项可以根据tcp包
@@ -227,11 +196,8 @@ Timestamp reply (obsolete)——时间戳应答（作废不用）
 
 [root@wentan ~]# iptables -A FORWARD -p tcp --syn
 #选项--syn相当于"--tcp-flags SYN,RST,ACK SYN"的简写
-```
-
 实例5
 
-```bash
 [root@wentan ~] # iptables -A INPUT -m 模块名 --state 状态参数：
 -m    iptables的模块        state: 状态检查        mac:网卡硬件地址
 --state     连接追踪中的状态：
@@ -243,17 +209,11 @@ Timestamp reply (obsolete)——时间戳应答（作废不用）
 [root@wentan ~]# iptables -A INPUT -p tcp --dport 22 -m state --state NEW -j ACCEPT
 # 对局域网内mac地址为00:0C:29:56:A6:A2主机开放其联机
 [root@wentan ~]# iptables -A INPUT -m mac --mac-source 01:00:5E:C6:49:A2 -j ACCEPT
-```
-
 实例6 本地端口转发
 
-```bash
 [root@wentan ~] # iptables -t nat -A PREROUTING -p tcp --dport 6666 -j REDIRECT  --to-port 22
-```
-
 实例7 iptables 保存和恢复
 
-```bash
  #保存
 [root@wentan ~]# iptables-save > /etc/sysconfig/iptables
 #恢复
@@ -268,4 +228,3 @@ Timestamp reply (obsolete)——时间戳应答（作废不用）
 [root@wentan ~]# iptables -F
 #保存当前配置
 [root@wentan ~]# iptables-save
-```

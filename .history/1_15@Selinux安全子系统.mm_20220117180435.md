@@ -1,7 +1,7 @@
 <div style='display: none'>
   Date: 2022-01-15 22:43:40
   LastEditors: gyg
-  LastEditTime: 2022-01-17 18:05:51
+  LastEditTime: 2022-01-17 18:04:35
   FilePath: \test\1_15@Selinux安全子系统.mm.md
 </div>
 
@@ -11,21 +11,7 @@
 
 selinux在Linux环境中有非常重要的用途，在我们Linux环境中，如果禁用selinux，是可以减少非常多的报错，但是在**生产环境中想当不推荐**
 
-<!-- vscode-markdown-toc -->
-* 1. [selinux在linux当中的三个用途](#selinuxlinux)
-* 2. [selinux 的三个模式](#selinux)
-* 3. [selinux 的三个规则](#selinux-1)
-* 4. [安全上下文](#)
-* 5. [semanage管理安全策略](#semanage)
-	* 5.1. [semanage-port 管理安全上下文](#semanage-port)
-
-<!-- vscode-markdown-toc-config
-	numbering=true
-	autoSave=true
-	/vscode-markdown-toc-config -->
-<!-- /vscode-markdown-toc -->
-
-##  1. <a name='selinuxlinux'></a>selinux在linux当中的三个用途
+## selinux在linux当中的三个用途
 
 1. 可以允许或者拒绝访问我们的文件和资源
 
@@ -33,7 +19,7 @@ selinux在Linux环境中有非常重要的用途，在我们Linux环境中，如
 
 3. 可以对一个文件做更精确的限制，远远比我们的用户权限高很多，更精确。
 
-##  2. <a name='selinux'></a>selinux 的三个模式
+## selinux 的三个模式
 
 1. **强制模式 enforcing:**  selinux 会强制执行严格的访问控制，系统默认就是这个模式，它会拒绝其他服务访问违规端口，同时也限制这些服务的访问执行权限，而且但凡发现了违规行为，会记录在日志里面。
 
@@ -74,7 +60,7 @@ Disabled
 #最后再改回enforcing
 ```
 
-##  3. <a name='selinux-1'></a>selinux 的三个规则
+## selinux 的三个规则
 
 1. **targeted:** 默认规则，针对网络服务的限制比较多，对本机的限制比较少
 2. **minimun:** 只会选择性的保护我们的系统模块 例如内核 device 
@@ -91,7 +77,7 @@ Disabled
 [root@wentan ~]# systemctl stop firewalld.service
 ```
 
-##  4. <a name=''></a>安全上下文
+## 安全上下文
 
 >在启动selinux的时候，selinux会给系统中的资源设置一个安全上下文，保存在 /etc/selinux/targeted/contexts/files/file_contexts
 
@@ -109,7 +95,7 @@ object_r    |    #代表了文件目录的角色
 httpd_sys_content_t|  #代表了网站服务的系统文件
 S0 |  #sensitivity
 
-##  5. <a name='semanage'></a>semanage管理安全策略
+## semanage管理安全策略
 
 >使用getsebool命令查询并过滤出所有与HTTP协议相关的安全策略。其中，off为禁止状态，on为允许状态。
 
@@ -165,7 +151,7 @@ prosody_bind_http_port --> off
 
 面对如此多的SELinux域安全策略规则，实在没有必要逐个理解它们，我们只要能通过名字大致猜测出相关的策略用途就足够了。比如，想要开启httpd服务的个人用户主页功能，那么用到的SELinux域安全策略应该是httpd_enable_homedir
 
-###  5.1. <a name='semanage-port'></a>semanage-port 管理安全上下文
+### semanage-port 管理安全上下文
 
 参数|解释
  :-: | :-: 

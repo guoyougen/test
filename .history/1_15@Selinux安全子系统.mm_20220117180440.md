@@ -1,16 +1,3 @@
-<div style='display: none'>
-  Date: 2022-01-15 22:43:40
-  LastEditors: gyg
-  LastEditTime: 2022-01-17 18:05:51
-  FilePath: \test\1_15@Selinux安全子系统.mm.md
-</div>
-
-# 什么是SELinux
-
->SELinux（Security-Enhanced Linux）是美国国家安全局在Linux开源社区的帮助下开发的一个强制访问控制（MAC，Mandatory Access Control）的安全子系统。RHEL 7系统使用SELinux技术的目的是为了让各个服务进程都受到约束，使其仅获取本应获取的资源。
-
-selinux在Linux环境中有非常重要的用途，在我们Linux环境中，如果禁用selinux，是可以减少非常多的报错，但是在**生产环境中想当不推荐**
-
 <!-- vscode-markdown-toc -->
 * 1. [selinux在linux当中的三个用途](#selinuxlinux)
 * 2. [selinux 的三个模式](#selinux)
@@ -23,7 +10,18 @@ selinux在Linux环境中有非常重要的用途，在我们Linux环境中，如
 	numbering=true
 	autoSave=true
 	/vscode-markdown-toc-config -->
-<!-- /vscode-markdown-toc -->
+<!-- /vscode-markdown-toc --><div style='display: none'>
+  Date: 2022-01-15 22:43:40
+  LastEditors: gyg
+  LastEditTime: 2022-01-17 18:04:35
+  FilePath: \test\1_15@Selinux安全子系统.mm.md
+</div>
+
+# 什么是SELinux
+
+>SELinux（Security-Enhanced Linux）是美国国家安全局在Linux开源社区的帮助下开发的一个强制访问控制（MAC，Mandatory Access Control）的安全子系统。RHEL 7系统使用SELinux技术的目的是为了让各个服务进程都受到约束，使其仅获取本应获取的资源。
+
+selinux在Linux环境中有非常重要的用途，在我们Linux环境中，如果禁用selinux，是可以减少非常多的报错，但是在**生产环境中想当不推荐**
 
 ##  1. <a name='selinuxlinux'></a>selinux在linux当中的三个用途
 
