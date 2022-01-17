@@ -1,7 +1,7 @@
 <div style='display: none'>
   Date: 2022-01-15 22:42:46
   LastEditors: gyg
-  LastEditTime: 2022-01-17 12:11:33
+  LastEditTime: 2022-01-17 11:57:14
   FilePath: \test\1_14~1_15@iptables.mm.md
 </div>
 
@@ -42,15 +42,22 @@
 |  nat   | 修改数据包中的源、目标IP地址或端口 |
 | filter |    确定是否放行该数据包（过滤）    |
 
-![851704262675c3a76491391b6539b86e](https://s2.loli.net/2022/01/17/FrcJuPvyD3GlKk9.png)
+图片
 
-- 规则表的先后顺序:raw→mangle→nat→filter
-- 规则链的先后顺序:
-  1. 入站顺序 PREROUTING→INPUT
-  2. 出站顺序 OUTPUT→POSTROUTING
-  3. 转发顺序 PREROUTING→FORWARD→POSTROUTING
 
-![5eaf219f7e0e72d14ed1d6a0e934e985](https://s2.loli.net/2022/01/17/r1UajPqH9QS4Ktz.png)
+
+
+
+•规则表的先后顺序:raw→mangle→nat→filter
+•规则链的先后顺序:
+
+•入站顺序 PREROUTING→INPUT
+•出站顺序 OUTPUT→POSTROUTING
+•转发顺序 PREROUTING→FORWARD→POSTROUTING
+
+
+
+图片
 
 2.4 iptables命令中常见的控制类型
 类型	功能

@@ -1,7 +1,7 @@
 <div style='display: none'>
   Date: 2022-01-15 22:42:46
   LastEditors: gyg
-  LastEditTime: 2022-01-17 12:11:33
+  LastEditTime: 2022-01-17 12:05:57
   FilePath: \test\1_14~1_15@iptables.mm.md
 </div>
 
@@ -50,7 +50,7 @@
   2. 出站顺序 OUTPUT→POSTROUTING
   3. 转发顺序 PREROUTING→FORWARD→POSTROUTING
 
-![5eaf219f7e0e72d14ed1d6a0e934e985](https://s2.loli.net/2022/01/17/r1UajPqH9QS4Ktz.png)
+
 
 2.4 iptables命令中常见的控制类型
 类型	功能
