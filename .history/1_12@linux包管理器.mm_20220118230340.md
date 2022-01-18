@@ -1,0 +1,156 @@
+
+# Linux 软件仓库
+
+>软件仓库的名称叫 yum/dnf
+红帽系列操作系统软件仓库位置在 /etc/yum.repos.d/
+
+## 配置软件仓库两种方法
+
+### 已知软件仓库的基础url位置，自己手动编辑配置文件，例如
+
+```bash
+#手动书写
+[root@wentan yum.repos.d]# vim /etc/yum.repos.d/rhel_dvd.repo
+[baseos]
+name = Red Hat Enterprise Linux 8.2 BaseOS
+baseurl = http://content.example.com/rhel8.2/x86-64/dvd/BaseOS
+enabled = 0
+gpgcheck = 1
+gpgkey = http://content.example.com/rhel8.2/gpgkey-base
+
+[appstream]
+name = Red Hat Enterprise Linux 8.2 AppStream
+baseurl = http://content.example.com/rhel8.2/x86-64/dvd/AppStream
+enabled = 0
+gpgcheck = 1
+gpgkey = http://content.example.com/rhel8.2/gpgkey-base
+```
+
+### 直接从各大网站现有提供软件仓库配置文件，直接下载即可
+
+接下来需要先卸载红帽原有仓库
+
+#### 卸载原仓库
+
+```bash
+[root@wentan ~]# cd /etc/yum.repos.d/
+[root@wentan yum.repos.d]# ll
+total 4
+-rw-r--r--. 1 root root 358 Jan  5 04:36 redhat.repo
+[root@wentan yum.repos.d]# rm -f redhat.repo 
+[root@wentan yum.repos.d]# ll
+total 0
+```
+
+#### 从阿里云下载软件仓库
+
+```bash
+#下载阿里云软件仓库
+[root@wentan yum.repos.d]# curl -o /etc/yum.repos.d/Rhel8.repo https://mirrors.aliyun.com/repo/Centos-8.repo
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  2595  100  2595    0     0  12416      0 --:--:-- --:--:-- --:--:-- 12416
+[root@wentan yum.repos.d]# ll
+total 4
+-rw-r--r--. 1 root root 2595 Jan 12 13:43 Rhel8.repo
+```
+
+#### 需要先清除历史软件仓库缓存，再建立新仓库
+
+```bash
+#清空缓存
+[root@wentan yum.repos.d]# yum clean all 
+Updating Subscription Management repositories.
+Unable to read consumer identity
+This system is not registered to Red Hat Subscription Management. You can use subscription-manager to register.
+17 files removed
+#启用
+[root@wentan yum.repos.d]# yum repolist all 
+Updating Subscription Management repositories.
+Unable to read consumer identity
+This system is not registered to Red Hat Subscription Management. You can use subscription-manager to register.
+CentOS-8 - AppStream - mirrors.aliyun.com          1.9 MB/s | 8.4 MB     00:04    
+CentOS-8 - Base - mirrors.aliyun.com               1.8 MB/s | 4.6 MB     00:02    
+CentOS-8 - Extras - mirrors.aliyun.com                                                                                                                      4.8 kB/s |  10 kB     00:02    
+repo id                                                                repo name                                                                                              status
+AppStream                                                              CentOS-8 - AppStream - mirrors.aliyun.com                                                              enabled: 5,596
+PowerTools                                                             CentOS-8 - PowerTools - mirrors.aliyun.com                                                             disabled
+appstream                                                              Red Hat Enterprise Linux 8.2 AppStream                                                                 disabled
+base                                                                   CentOS-8 - Base - mirrors.aliyun.com                                                                   enabled: 1,896
+baseos                                                                 Red Hat Enterprise Linux 8.2 BaseOS                                                                    disabled
+centosplus                                                             CentOS-8 - Plus - mirrors.aliyun.com                                                                   disabled
+extras                                                                 CentOS-8 - Extras - mirrors.aliyun.com                                                                 enabled:    38
+```
+
+**注意：EPEL（Extra Packages for Enterprise Linux）为红帽操作系统提供了额外的软件仓库**
+`[root@wentan yum.repos.d]# yum install -y epel-release`
+
+## 关于软件的安装、更新、卸载、查找
+
+实例1
+
+```bash
+#软件仓库安装httpd
+[root@wentan ~]# yum install -y httpd
+#软件仓库更新httpd
+[root@wentan ~]# yum update httpd
+#软件仓库卸载httpd
+[root@wentan ~]# yum remove -y httpd
+```
+
+实例2
+
+```bash
+yum list  httpd            #软件仓库查找叫httpd的软件列表
+yum list  installed       #软件仓库查询已经下载的软件列表
+yum info  httpd            #软件仓库查询已经安装的httpd软件信息
+yum history                #软件仓库历史命令
+yum history info 4       #查找软件仓库历史命令4谁干的 干了什么
+yum list                #显示所有软件仓库可安装的软件
+yum list |grep locate      #显示所有软件仓库可安装的软件查找名字叫locate的
+yum search locate          #软件仓库中去搜寻名字带有locate的软件
+yum provides   /etc/ssh/sshd_config    #软件仓库中查找 哪个软件提供了这个配置文件的功能
+yum provides ifconfig   #软件仓库查找谁提供了命令  ifconfig
+yum provides pstree     #软件仓库查找谁提供了命令  pstree
+yum search gnome          #软件仓库搜索带有桌面功能的软件
+yum groupinfo   "gnome"    #查找软件包组桌面这个功能一共要安装多少软件
+```
+
+实例3 软件包组的安装：
+
+```bash
+yum group install gnome -y
+通过软件包组，直接安装整个桌面的需要的所有软件包
+```
+
+## 关于软件仓库本身的更新
+
+```bash
+[root@wentan ~]# yum update
+#更新最新的软件仓库目录，如果有新的软件加入软件仓库，不执行这个命令就来安装，有可能会显示这个软件找不到。一般在安装最新的有些工具的时候，需要先yum update完成软件仓库本身的更新
+```
+
+因为我们系统属于未注册
+`yum update --allowerasing`
+允许擦除不兼容的部分，防止多个软件之间冲突
+
+## rpm 命令
+
+>rpm用来安装软件包
+
+命令|解释
+:-: | :-:
+rpm    -i      |  #安装
+rpm    -v       | #查看详细信息
+rpm    -e       | #删除移除
+rpm    -U       | #升级
+
+实例
+
+```bash
+#首先可以下载 QQ for Linux 版本
+wegt https://down.qq.com/qqweb/LinuxQQ/linuxqq_2.0.0-b2-1089_x86_64.rpm
+rpm -i linuxqq_2.0.0-b2-1089_x86_64.rpm
+#卸载QQ for Linux
+rpm -e linuxqq
+```
